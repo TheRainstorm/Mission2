@@ -25,18 +25,36 @@ namespace myfirstAPP
         {
             Real = re;
             Image = im;
-            Mod = Math.Sqrt(re * re + im * im);
-            Arg = Math.Acos(re / Mod);
+            Mod = Math.Sqrt(Math.Pow(Real, 2) + Math.Pow(Image, 2));
+            Arg = Math.Atan(Image / Real);
         }
         //展示复数的值
-        public void Showvalue()
+        public void Show()
         {
-            if (Image == 0)
-                Console.WriteLine(Real);
-            else if (Real == 0)
-                Console.WriteLine("{0}i", Image);
+            if (Real == 0)
+            {
+                if (Image == 1)
+                    Console.WriteLine("i");
+                else if (Image == 0)
+                    Console.WriteLine("0");
+                else if (Image == -1)
+                    Console.WriteLine("-i");
+                else
+                    Console.WriteLine("{0}i", Image);
+            }
             else
-                Console.WriteLine("{0}+{1}i", Real, Image);
+            {
+                if (Image == 1)
+                    Console.WriteLine("{0}+i", Real);
+                else if (Image == 0)
+                    Console.WriteLine("{0}", Real);
+                else if (Image == -1)
+                    Console.WriteLine("{0}-i", Real);
+                else if (Image > 0)
+                    Console.WriteLine("{0}+{1}i", Real, Image);
+                else
+                    Console.WriteLine("{0}-{1}i", Real, Image);
+            }
         }
         //加法运算符重载
         public static Complex operator +(Complex complex1, Complex complex2)
@@ -80,13 +98,17 @@ namespace myfirstAPP
         //除法运算符重载
         public static Complex operator /(Complex c1, Complex c2)
         {
-            double d = c2.Real * c2.Real + c2.Image * c2.Image;
-            double re = (c1.Real * c2.Real + c1.Image * c2.Image) / d;
-            double im = (c2.Real * c1.Image - c1.Real * c2.Image) / d;
-            return new Complex(re, im);
+            //if (c2.Mod == 0)
+            //else
+            {
+                double d = c2.Real * c2.Real + c2.Image * c2.Image;
+                double re = (c1.Real * c2.Real + c1.Image * c2.Image) / d;
+                double im = (c2.Real * c1.Image - c1.Real * c2.Image) / d;
+                return new Complex(re, im);
+            }
         }
-        //复数的整数次幂
-        public static Complex Pow(Complex c, int n)
+        //复数的实数次幂
+        public static Complex operator ^ (Complex c, double n)
         {
             double Mod = Math.Pow(c.Mod, n);
             double Arg = n * c.Arg;
